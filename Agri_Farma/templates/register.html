@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Register - AgriFarma{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="fas fa-user-plus"></i> Create Your Account</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('register') }}" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label">Password *</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="confirm_password" class="form-label">Confirm Password *</label>
+                                <input type="password" class="form-control" id="confirm_password" 
+                                       name="confirm_password" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mobile" class="form-label">Mobile Number *</label>
+                            <input type="tel" class="form-control" id="mobile" name="mobile" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="city" class="form-label">City *</label>
+                                <input type="text" class="form-control" id="city" name="city" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="state" class="form-label">State/Province *</label>
+                                <input type="text" class="form-control" id="state" name="state" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="country" class="form-label">Country *</label>
+                                <input type="text" class="form-control" id="country" name="country" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="profession" class="form-label">Profession *</label>
+                                <select class="form-select" id="profession" name="profession" required>
+                                    <option value="">Select Profession</option>
+                                    <option value="farmer">Farmer</option>
+                                    <option value="academic">Academic</option>
+                                    <option value="consultant">Consultant</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="expertise" class="form-label">Expertise Level *</label>
+                                <select class="form-select" id="expertise" name="expertise" required>
+                                    <option value="">Select Level</option>
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="profile_pic" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" id="profile_pic" name="profile_pic" 
+                                   accept="image/*">
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I agree to the <a href="{{ url_for('terms') }}" target="_blank">Terms and Conditions</a>
+                            </label>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-user-plus"></i> Register
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <p class="text-center mb-0">
+                        Already have an account? 
+                        <a href="{{ url_for('login') }}">Login here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Password confirmation validation
+document.querySelector('form').addEventListener('submit', function(e) {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm_password').value;
+
+    if (password !== confirmPassword) {
+        e.preventDefault();
+        alert('Passwords do not match!');
+    }
+});
+</script>
+{% endblock %}

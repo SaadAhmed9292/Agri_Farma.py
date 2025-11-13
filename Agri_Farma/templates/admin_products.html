@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block title %}Admin Products{% endblock %}{% block content %}
+<div class='container'><h2>Products</h2>
+<table class='table'><thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Status</th></tr></thead><tbody>
+{% for p in products %}<tr><td>{{ p.name }}</td><td>{{ p.category.name if p.category else '-' }}</td><td>Rs. {{ p.price }}</td><td>{{ 'Active' if p.active else 'Inactive' }}</td></tr>{% endfor %}
+</tbody></table></div>{% endblock %}

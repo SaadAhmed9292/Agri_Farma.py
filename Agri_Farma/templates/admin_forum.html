@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block title %}Admin Forum{% endblock %}{% block content %}<div class='container'>
+<h2>Forum Moderation</h2>
+<table class='table'><thead><tr><th>Thread</th><th>Author</th><th>Posts</th></tr></thead><tbody>
+{% for t in threads %}<tr><td>{{ t.title }}</td><td>{{ t.author.name }}</td><td>{{ t.posts|length }}</td></tr>{% endfor %}
+</tbody></table></div>{% endblock %}

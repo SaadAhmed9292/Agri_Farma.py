@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block title %}Admin Consultants{% endblock %}{% block content %}
+<div class='container'><h2>Consultant Approvals</h2>
+<table class='table'><thead><tr><th>Name</th><th>Expertise</th><th>Status</th></tr></thead><tbody>
+{% for c in consultants %}<tr><td>{{ c.user.name }}</td><td>{{ c.expertise }}</td><td>{{ 'Approved' if c.approved else 'Pending' }}</td></tr>{% endfor %}
+</tbody></table></div>{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}{% block title %}Admin Categories{% endblock %}{% block content %}
+<div class='container'><h2>Categories</h2>
+<form method='post'><div class='row g-2'>
+<div class='col-md-4'><input class='form-control' name='name' placeholder='Name' required></div>
+<div class='col-md-4'><select class='form-select' name='module'><option>forum</option><option>knowledge</option><option>consultancy</option><option>shop</option></select></div>
+<div class='col-md-4'><button class='btn btn-success'>Save</button></div>
+</div></form>
+<hr>
+<table class='table'><thead><tr><th>Name</th><th>Module</th><th>Description</th></tr></thead><tbody>
+{% for c in categories %}<tr><td>{{ c.name }}</td><td>{{ c.module }}</td><td>{{ c.description }}</td></tr>{% endfor %}
+</tbody></table></div>{% endblock %}

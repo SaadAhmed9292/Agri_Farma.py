@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Search Forum - AgriFarma{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">
+      <i class="fas fa-search text-success"></i> Search Forum
+    </h2>
+    <a href="{{ url_for('forum_home') }}" class="btn btn-outline-success">
+      <i class="fas fa-comments"></i> Forum Home
+    </a>
+  </div>
+
+  <!-- Search bar -->
+  <form action="{{ url_for('forum_search') }}" method="GET" class="mb-4">
+    <div class="input-group">
+      <span class="input-group-text"><i class="fas fa-search"></i></span>
+      <input type="text" name="q" class="form-control" value="{{ query or request.args.get('q','') }}"
+             placeholder="Search threads by title or keywords..." autofocus>
+      <button class="btn btn-success" type="submit">Search</button>
+    </div>
+  </form>
+
+  <!-- Results -->
+  {% if results %}
+  <div class="list-group">
+    {% for t in results %}
+    <a href="{{ url_for('forum_thread', thread_id=t.id) }}" class="list-group-item list-group-item-action">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{ t.title }}</h5>
+        <small class="text-muted">
+          {{ t.created_at|timesince if t.created_at else '' }}
+        </small>
+      </div>
+      <p class="mb-1 text-muted">{{ t.content[:140] }}{% if t.content|length > 140 %}...{% endif %}</p>
+      <small class="text-muted">
+        by {{ t.author.name }} • in {{ t.category.name }} • {{ t.posts|length }} replies • {{ t.views }} views
+      </small>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+    {% if query %}
+      <div class="alert alert-warning mt-3">
+        No threads found for “{{ query }}”. Try different keywords.
+      </div>
+    {% else %}
+      <div class="alert alert-info mt-3">
+        Enter a keyword to search forum threads.
+      </div>
+    {% endif %}
+  {% endif %}
+
+</div>
+{% endblock %}

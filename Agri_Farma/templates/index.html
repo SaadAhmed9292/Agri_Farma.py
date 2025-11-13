@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block title %}AgriFarma - Agricultural Knowledge Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <section class="hero-section mb-5">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-md-10 col-lg-8">
+                <h1 class="display-3 fw-bold mb-4">Welcome to AgriFarma</h1>
+                <p class="lead fs-4 mb-4">Your one-stop platform for agricultural knowledge, expert consultancy, 
+                   community discussions, and marketplace for farming products.</p>
+                <div class="mt-4">
+                    <a href="{{ url_for('register') }}" class="btn btn-success btn-lg me-3 px-4 py-3">
+                        <i class="fas fa-user-plus"></i> Get Started
+                    </a>
+                    <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg px-4 py-3">
+                        <i class="fas fa-info-circle"></i> Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section mb-5">
+        <h2 class="text-center mb-4">Our Services</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-comments fa-3x text-success"></i>
+                        </div>
+                        <h5 class="card-title">Discussion Forum</h5>
+                        <p class="card-text">Connect with fellow farmers, share experiences, and get answers.</p>
+                        <a href="{{ url_for('forum_home') }}" class="btn btn-outline-success">
+                            Explore Forum
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-book fa-3x text-success"></i>
+                        </div>
+                        <h5 class="card-title">Knowledge Base</h5>
+                        <p class="card-text">Access articles, guides, success stories, and farming tips.</p>
+                        <a href="{{ url_for('knowledge_home') }}" class="btn btn-outline-success">
+                            Browse Articles
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-user-tie fa-3x text-success"></i>
+                        </div>
+                        <h5 class="card-title">Expert Consultancy</h5>
+                        <p class="card-text">Get professional advice from agricultural experts.</p>
+                        <a href="{{ url_for('consultancy_home') }}" class="btn btn-outline-success">
+                            Find Experts
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-shopping-cart fa-3x text-success"></i>
+                        </div>
+                        <h5 class="card-title">Marketplace</h5>
+                        <p class="card-text">Buy agricultural products and sell your produce online.</p>
+                        <a href="{{ url_for('shop_home') }}" class="btn btn-outline-success">
+                            Visit Shop
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Forum Discussions -->
+    <section class="latest-forum mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3><i class="fas fa-fire text-danger"></i> Trending Discussions</h3>
+            <a href="{{ url_for('forum_home') }}" class="btn btn-sm btn-outline-success">View All</a>
+        </div>
+
+        <div class="row g-3">
+            {% for thread in latest_threads %}
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <a href="{{ url_for('forum_thread', thread_id=thread.id) }}" 
+                               class="text-decoration-none">
+                                {{ thread.title }}
+                            </a>
+                        </h6>
+                        <p class="card-text text-muted small">
+                            <i class="fas fa-user"></i> {{ thread.author.name }} • 
+                            <i class="fas fa-clock"></i> {{ thread.created_at|timesince }} • 
+                            <i class="fas fa-comment"></i> {{ thread.replies_count }} replies
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Latest Knowledge Base Articles -->
+    <section class="latest-knowledge mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3><i class="fas fa-newspaper text-primary"></i> Latest Articles</h3>
+            <a href="{{ url_for('knowledge_home') }}" class="btn btn-sm btn-outline-success">View All</a>
+        </div>
+
+        <div class="row g-4">
+            {% for blog in latest_blogs %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    {% if blog.featured_image %}
+                    <img src="{{ blog.featured_image }}" class="card-img-top" alt="{{ blog.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <span class="badge bg-success mb-2">{{ blog.category.name }}</span>
+                        <h5 class="card-title">
+                            <a href="{{ url_for('blog_detail', blog_id=blog.id) }}" 
+                               class="text-decoration-none text-dark">
+                                {{ blog.title }}
+                            </a>
+                        </h5>
+                        <p class="card-text">{{ blog.excerpt }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">
+                            <i class="fas fa-user"></i> {{ blog.author.name }} • 
+                            <i class="fas fa-calendar"></i> {{ blog.created_at|date }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3><i class="fas fa-star text-warning"></i> Featured Products</h3>
+            <a href="{{ url_for('shop_home') }}" class="btn btn-sm btn-outline-success">View All</a>
+        </div>
+
+        <div class="row g-4">
+            {% for product in featured_products %}
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm">
+                    <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ product.name }}</h6>
+                        <p class="text-success fw-bold">Rs. {{ product.price }}</p>
+                        <a href="{{ url_for('product_detail', product_id=product.id) }}" 
+                           class="btn btn-success btn-sm w-100">
+                            <i class="fas fa-eye"></i> View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section bg-success text-white rounded p-5 text-center mb-5">
+        <h2>Ready to Transform Your Farming?</h2>
+        <p class="lead">Join thousands of farmers who are already benefiting from our platform.</p>
+        <a href="{{ url_for('register') }}" class="btn btn-light btn-lg">
+            <i class="fas fa-rocket"></i> Join AgriFarma Today
+        </a>
+    </section>
+
+    <!-- Statistics -->
+    <section class="stats-section mb-5">
+        <div class="row text-center g-4">
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2 class="text-success fw-bold">{{ stats.users }}+</h2>
+                    <p class="text-muted">Registered Users</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2 class="text-success fw-bold">{{ stats.discussions }}+</h2>
+                    <p class="text-muted">Discussions</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2 class="text-success fw-bold">{{ stats.articles }}+</h2>
+                    <p class="text-muted">Articles Published</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2 class="text-success fw-bold">{{ stats.products }}+</h2>
+                    <p class="text-muted">Products Listed</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

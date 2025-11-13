@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Search Knowledge Base - AgriFarma{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">
+      <i class="fas fa-search text-success"></i> Search Knowledge Base
+    </h2>
+    <a href="{{ url_for('knowledge_home') }}" class="btn btn-outline-success">
+      <i class="fas fa-book"></i> Knowledge Home
+    </a>
+  </div>
+
+  <!-- Search bar -->
+  <form action="{{ url_for('knowledge_search') }}" method="GET" class="mb-4">
+    <div class="input-group">
+      <span class="input-group-text"><i class="fas fa-search"></i></span>
+      <input type="text" name="q" class="form-control"
+             value="{{ query or request.args.get('q','') }}"
+             placeholder="Search by title, tags, or keywords..." autofocus>
+      <button class="btn btn-success" type="submit">Search</button>
+    </div>
+  </form>
+
+  <!-- Results -->
+  {% if results %}
+  <div class="row g-4">
+    {% for a in results %}
+    <div class="col-md-6">
+      <div class="card h-100 shadow-sm">
+        {% if a.featured_image %}
+        <img src="{{ a.featured_image }}" class="card-img-top" alt="{{ a.title }}">
+        {% endif %}
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="badge bg-success">{{ a.category.name }}</span>
+            <small class="text-muted"><i class="fas fa-calendar"></i> {{ a.created_at|date }}</small>
+          </div>
+          <h5 class="card-title mb-1">
+            <a href="{{ url_for('blog_detail', blog_id=a.id) }}" class="text-decoration-none text-dark">
+              {{ a.title }}
+            </a>
+          </h5>
+          <p class="card-text text-muted">
+            {{ (a.content|striptags)[:160] }}{% if (a.content|striptags)|length > 160 %}...{% endif %}
+          </p>
+          {% if a.tags %}
+          <div>
+            {% for tag in a.tags.split(',') %}
+              <span class="badge bg-light text-dark me-1">{{ tag.strip() }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+          <small class="text-muted"><i class="fas fa-user"></i> {{ a.author.name }}</small>
+          <a href="{{ url_for('blog_detail', blog_id=a.id) }}" class="btn btn-outline-success btn-sm">
+            Read More
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    {% if query %}
+      <div class="alert alert-warning mt-3">
+        No articles found for “{{ query }}”. Try different keywords or browse categories.
+      </div>
+    {% else %}
+      <div class="alert alert-info mt-3">
+        Enter a keyword to search Knowledge Base articles.
+      </div>
+    {% endif %}
+  {% endif %}
+
+</div>
+{% endblock %}

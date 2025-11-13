@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}My Orders - AgriFarma{% endblock %}
+{% block content %}
+<div class='container'>
+  <h2>My Orders</h2>
+  {% if orders %}
+  <div class='table-responsive mt-3'>
+    <table class='table'>
+      <thead><tr><th>ID</th><th>Date</th><th>Status</th><th>Total</th><th></th></tr></thead>
+      <tbody>
+        {% for o in orders %}
+        <tr>
+          <td>#{{ o.id }}</td>
+          <td>{{ o.created_at|date }}</td>
+          <td><span class='badge bg-info'>{{ o.status }}</span></td>
+          <td>Rs. {{ o.total }}</td>
+          <td><a class='btn btn-sm btn-outline-success' href='{{ url_for('order_detail', order_id=o.id) }}'>Details</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class='alert alert-info'>No orders yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

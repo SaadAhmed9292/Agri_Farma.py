@@ -1,0 +1,34 @@
+# Web framework
+Flask==3.0.3
+
+# Database & ORM
+SQLAlchemy==2.0.35
+Flask-SQLAlchemy==3.1.1
+
+# Auth & forms
+Flask-Login==0.6.3
+Flask-WTF==1.2.1
+WTForms==3.1.2
+email-validator==2.2.0
+
+# Migrations
+Flask-Migrate==4.0.7
+alembic==1.13.2
+
+# Security & utilities
+itsdangerous==2.2.0
+Werkzeug==3.0.4
+python-dotenv==1.0.1
+
+# Data/reporting (optional but listed in project guide)
+pandas==2.2.3
+numpy==2.1.3
+
+# Image handling (for uploads/thumbnails if needed)
+Pillow==11.0.0
+
+# Charts (used in admin dashboard examples)
+MarkupSafe==2.1.5
+
+# HTTP (if you later call external APIs)
+requests==2.32.3

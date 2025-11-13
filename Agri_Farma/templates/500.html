@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}500 - Server Error | AgriFarma{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+
+      <div class="py-5">
+        <div class="mb-3">
+          <i class="fas fa-exclamation-triangle text-danger" style="font-size: 56px;"></i>
+        </div>
+        <h1 class="display-6 fw-bold">Something went wrong</h1>
+        <p class="lead text-muted mb-4">
+          An unexpected error occurred on our side. Please try again in a moment.
+        </p>
+
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+          <a href="{{ url_for('index') }}" class="btn btn-success">
+            <i class="fas fa-home"></i> Go to Home
+          </a>
+          <a href="{{ request.referrer or url_for('index') }}" class="btn btn-outline-success">
+            <i class="fas fa-undo"></i> Go Back
+          </a>
+          <a href="{{ url_for('contact') }}" class="btn btn-outline-success">
+            <i class="fas fa-life-ring"></i> Contact Support
+          </a>
+        </div>
+
+        <div class="text-muted small">
+          If this keeps happening, please include what you were doing and the time of the error.
+        </div>
+      </div>
+
+      {% if error_id %}
+      <div class="alert alert-light border text-start mt-3">
+        <strong>Error ID:</strong> {{ error_id }}<br>
+        <small>This reference helps us find logs and fix the issue faster.</small>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

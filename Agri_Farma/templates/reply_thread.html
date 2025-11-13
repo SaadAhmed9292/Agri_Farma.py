@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Reply to Thread - AgriFarma{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      <!-- Thread context -->
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h5 class="card-title mb-1">{{ thread.title }}</h5>
+          <small class="text-muted">
+            by {{ thread.author.name }} • {{ thread.created_at|timesince if thread.created_at else '' }} • in {{ thread.category.name }}
+          </small>
+          <hr>
+          <p class="mb-0 text-muted">{{ thread.content }}</p>
+        </div>
+      </div>
+
+      <!-- Reply form -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0"><i class="fas fa-reply"></i> Post Your Reply</h5>
+        </div>
+        <div class="card-body">
+          {% if not current_user.is_authenticated %}
+            <div class="alert alert-info">
+              Please <a href="{{ url_for('login') }}">login</a> to reply.
+            </div>
+          {% else %}
+            <form method="POST" action="{{ url_for('reply_thread', thread_id=thread.id) }}">
+              <div class="mb-3">
+                <label for="content" class="form-label">Message</label>
+                <textarea id="content" name="content" rows="6" class="form-control" placeholder="Write your reply..." required></textarea>
+              </div>
+              <div class="d-flex justify-content-between">
+                <a href="{{ url_for('forum_thread', thread_id=thread.id) }}" class="btn btn-outline-secondary">
+                  <i class="fas fa-arrow-left"></i> Back to Thread
+                </a>
+                <button type="submit" class="btn btn-success">
+                  <i class="fas fa-paper-plane"></i> Post Reply
+                </button>
+              </div>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Recent replies (optional preview) -->
+      {% if recent_posts %}
+      <div class="mt-4">
+        <h6 class="text-muted">Recent Replies</h6>
+        <div class="list-group">
+          {% for p in recent_posts %}
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between">
+              <strong>{{ p.author.name }}</strong>
+              <small class="text-muted">{{ p.created_at|timesince if p.created_at else '' }}</small>
+            </div>
+            <div class="mt-1 text-muted">{{ p.content[:200] }}{% if p.content|length > 200 %}...{% endif %}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

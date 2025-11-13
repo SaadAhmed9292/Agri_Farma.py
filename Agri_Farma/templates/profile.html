@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - AgriFarma{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row g-4 mt-2">
+
+    <!-- Left: Profile Card -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <img src="{{ user.profile.picture or url_for('static', filename='images/user.png') }}"
+               class="rounded-circle border mb-3" width="120" height="120" alt="{{ user.name }}">
+          <h4 class="mb-0">{{ user.name }}</h4>
+          <small class="text-muted">{{ user.email }}</small>
+
+          <div class="mt-3">
+            <span class="badge bg-success me-1">{{ user.profile.profession|capitalize if user.profile.profession }}</span>
+            <span class="badge bg-secondary">{{ user.profile.expertise|capitalize if user.profile.expertise }}</span>
+          </div>
+
+          <hr>
+          <div class="text-start small text-muted">
+            <div class="mb-1"><i class="fas fa-map-marker-alt"></i> {{ user.profile.city }}, {{ user.profile.state }}, {{ user.profile.country }}</div>
+            <div class="mb-1"><i class="fas fa-calendar"></i> Joined: {{ user.join_date.strftime('%Y-%m-%d') }}</div>
+          </div>
+
+          {% if current_user.is_authenticated and current_user.id == user.id %}
+          <div class="d-grid gap-2 mt-3">
+            <a href="{{ url_for('edit_profile') }}" class="btn btn-outline-success btn-sm">
+              <i class="fas fa-user-edit"></i> Edit Profile
+            </a>
+            <a href="{{ url_for('change_password') }}" class="btn btn-outline-secondary btn-sm">
+              <i class="fas fa-key"></i> Change Password
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="card shadow-sm mt-3">
+        <div class="card-body">
+          <h6 class="text-uppercase text-muted mb-3">Stats</h6>
+          <div class="d-flex justify-content-between">
+            <div>
+              <div class="fw-bold">{{ user.profile.posts_count or 0 }}</div>
+              <small class="text-muted">Posts</small>
+            </div>
+            <div>
+              <div class="fw-bold">{{ user.profile.likes_count or 0 }}</div>
+              <small class="text-muted">Likes</small>
+            </div>
+            <div>
+              <div class="fw-bold">{{ orders_count or 0 }}</div>
+              <small class="text-muted">Orders</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Activity -->
+    <div class="col-lg-8">
+
+      <!-- Latest Forum Activity -->
+      <div class="card shadow-sm mb-3">
+        <div class="card-header bg-light">
+          <h6 class="mb-0"><i class="fas fa-comments text-success"></i> Latest Forum Activity</h6>
+        </div>
+        <div class="list-group list-group-flush">
+          {% if latest_threads %}
+            {% for t in latest_threads %}
+            <a href="{{ url_for('forum_thread', thread_id=t.id) }}" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">{{ t.title }}</h6>
+                <small class="text-muted">{{ t.created_at.strftime('%Y-%m-%d') }}</small>
+              </div>
+              <small class="text-muted">in {{ t.category.name }} • {{ t.posts|length }} replies</small>
+            </a>
+            {% endfor %}
+          {% else %}
+            <div class="list-group-item">No forum activity yet.</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Latest Blog Posts -->
+      <div class="card shadow-sm mb-3">
+        <div class="card-header bg-light">
+          <h6 class="mb-0"><i class="fas fa-book text-success"></i> Latest Blog Posts</h6>
+        </div>
+        <div class="list-group list-group-flush">
+          {% if latest_blogs %}
+            {% for b in latest_blogs %}
+            <a href="{{ url_for('blog_detail', blog_id=b.id) }}" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">{{ b.title }}</h6>
+                <small class="text-muted">{{ b.created_at.strftime('%Y-%m-%d') }}</small>
+              </div>
+              <small class="text-muted">in {{ b.category.name }}{% if b.tags %} • {{ b.tags }}{% endif %}</small>
+            </a>
+            {% endfor %}
+          {% else %}
+            <div class="list-group-item">No articles yet.</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      {% if current_user.is_authenticated and current_user.id == user.id %}
+      <div class="card shadow-sm">
+        <div class="card-header bg-light">
+          <h6 class="mb-0"><i class="fas fa-box text-success"></i> Recent Orders</h6>
+        </div>
+        <div class="table-responsive">
+          <table class="table mb-0">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if recent_orders %}
+                {% for o in recent_orders %}
+                <tr>
+                  <td>#{{ o.id }}</td>
+                  <td>{{ o.created_at.strftime('%Y-%m-%d') }}</td>
+                  <td><span class="badge bg-info">{{ o.status }}</span></td>
+                  <td>Rs. {{ o.total }}</td>
+                  <td>
+                    <a href="{{ url_for('order_detail', order_id=o.id) }}" class="btn btn-sm btn-outline-success">View</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              {% else %}
+                <tr><td colspan="5" class="text-muted">No recent orders.</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

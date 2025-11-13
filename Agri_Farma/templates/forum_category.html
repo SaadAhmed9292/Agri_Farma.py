@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Forum Category - AgriFarma{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>{{ category.name }}</h2>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('create_thread', category_id=category.id) }}" class="btn btn-success">
+      <i class="fas fa-plus"></i> New Thread
+    </a>
+    {% endif %}
+  </div>
+  <div class="list-group">
+    {% for thread in threads %}
+    <a href="{{ url_for('forum_thread', thread_id=thread.id) }}" class="list-group-item list-group-item-action">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{ thread.title }}</h5>
+        <small class="text-muted">{{ thread.created_at|timesince }}</small>
+      </div>
+      <small class="text-muted">by {{ thread.author.name }} • {{ thread.posts|length }} replies</small>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

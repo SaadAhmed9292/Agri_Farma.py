@@ -1,0 +1,278 @@
+/* AgriFarma — Global Styles */
+
+/* Root and theme */
+:root {
+  --af-green: #198754;    /* Bootstrap success */
+  --af-dark: #0f5132;
+  --af-light: #f6fff9;
+  --af-accent: #8bd3a6;
+  --af-warning: #ffc107;
+}
+
+/* Typography */
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", "Liberation Sans", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+  background-color: #fafafa;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: 0.2px;
+}
+
+/* Navbar tweaks */
+.navbar.bg-success {
+  background: linear-gradient(90deg, var(--af-green), #1e9b63);
+}
+.navbar-brand i {
+  margin-right: 6px;
+}
+.nav-link.active, .nav-link:focus {
+  color: #fff !important;
+}
+
+/* Buttons */
+.btn-success {
+  background-color: var(--af-green);
+  border-color: var(--af-green);
+}
+.btn-outline-success {
+  color: var(--af-green);
+  border-color: var(--af-green);
+}
+.btn-outline-success:hover {
+  background-color: var(--af-green);
+  color: #fff;
+}
+
+/* Cards and hover effects */
+.card {
+  border: 1px solid #eee;
+  border-radius: 10px;
+}
+.card.shadow-sm:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,.08);
+  transition: box-shadow .2s ease-in-out, transform .1s ease-in-out;
+}
+.hover-shadow:hover {
+  box-shadow: 0 1rem 2rem rgba(0,0,0,.12) !important;
+}
+
+/* Hero section */
+.hero-section {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  background-image: linear-gradient(rgba(15, 81, 50, 0.7), rgba(25, 135, 84, 0.6)), url('/static/images/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: white;
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+}
+.hero-section .display-3 {
+  line-height: 1.2;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+  font-weight: 700;
+}
+.hero-section p {
+  color: #ffffff;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  font-weight: 400;
+}
+.hero-section .btn {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  transition: all 0.3s ease;
+}
+.hero-section .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+}
+.hero-section .btn-outline-light {
+  border-width: 2px;
+  font-weight: 600;
+}
+.hero-section .btn-outline-light:hover {
+  background-color: white;
+  color: var(--af-green);
+}
+@media (max-width: 767.98px) {
+  .hero-section .display-3 {
+    font-size: 2.5rem;
+  }
+  .hero-section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    min-height: 400px;
+  }
+  .hero-section .btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Feature icons */
+.feature-icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background-color: var(--af-light);
+  color: var(--af-green);
+  margin: 0 auto;
+}
+
+/* Product cards */
+.product-card img {
+  object-fit: cover;
+  height: 180px;
+}
+.product-card .card-body {
+  padding-bottom: 0.75rem;
+}
+.product-card .rating i {
+  margin-left: 1px;
+}
+
+/* Stats boxes */
+.stat-box {
+  padding: 1rem 0.5rem;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+/* Footer */
+footer {
+  background: #0b3d29 !important;
+}
+footer h5, footer h6 {
+  letter-spacing: 0.5px;
+}
+footer a {
+  text-decoration: none;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Badges and pills */
+.badge.bg-success {
+  background-color: var(--af-green) !important;
+}
+.badge.bg-light {
+  background-color: #f5f5f5 !important;
+}
+
+/* Alerts: auto-hide animation support (if JS present) */
+.alert {
+  transition: opacity .3s ease-in-out, transform .2s ease-in-out;
+}
+
+/* Forms */
+.form-control:focus, .form-select:focus {
+  border-color: var(--af-green);
+  box-shadow: 0 0 0 .2rem rgba(25,135,84,.15);
+}
+.input-group-text {
+  background-color: #f8f9fa;
+}
+
+/* Tables */
+.table th {
+  font-weight: 600;
+}
+
+/* Pagination */
+.pagination .page-item.active .page-link {
+  background-color: var(--af-green);
+  border-color: var(--af-green);
+}
+
+/* Utilities */
+.text-muted.small {
+  font-size: 0.9rem;
+}
+.gap-2 > * + * {
+  margin-left: .5rem;
+}
+
+/* CTA section */
+.cta-section {
+  background: linear-gradient(135deg, var(--af-green), #2bb673);
+  border: none;
+}
+
+/* Images */
+img.rounded-start.h-100 {
+  object-fit: cover;
+}
+
+/* Sidebar cards */
+.list-group-item {
+  border-left: none;
+  border-right: none;
+}
+.list-group-item:first-child { border-top: none; }
+.list-group-item:last-child { border-bottom: none; }
+
+/* Admin panel sidebar (if used) */
+@media (min-width: 992px) {
+  .min-vh-100 {
+    min-height: 100vh !important;
+  }
+}
+
+/* Badges for statuses */
+.badge.bg-warning {
+  color: #000;
+}
+
+/* Newsletter form */
+#newsletter-form .form-control {
+  border-right: 0;
+}
+#newsletter-form .btn {
+  border-left: 0;
+}
+
+/* Responsive tweaks */
+@media (max-width: 991.98px) {
+  .product-card img {
+    height: 160px;
+  }
+}
+@media (max-width: 575.98px) {
+  .product-card img {
+    height: 140px;
+  }
+}
+
+/* Placeholder image style */
+img[alt="placeholder"], .placeholder-img {
+  background-color: #f0f0f0;
+  color: #999;
+}
+
+/* Helper classes */
+.af-shadow {
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.08) !important;
+}
+.af-rounded {
+  border-radius: 12px !important;
+}
+.af-soft {
+  background-color: var(--af-light) !important;
+}
+
+/* Toast fix for top spacing (if used) */
+.toast-container {
+  top: 70px;
+}
+
+/* End of AgriFarma styles */

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Register as Consultant - AgriFarma{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      <div class="card shadow-sm mt-3">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">
+            <i class="fas fa-user-tie"></i> Consultant Registration (Voluntary)
+          </h4>
+        </div>
+
+        <div class="card-body">
+          <p class="text-muted">
+            Share your agricultural expertise to help farmers. Your application will be reviewed before approval.
+          </p>
+
+          <form method="POST" action="{{ url_for('register_consultant') }}">
+            <div class="mb-3">
+              <label for="expertise" class="form-label">Expertise (headline)</label>
+              <input type="text" id="expertise" name="expertise" class="form-control" placeholder="e.g., Crop Disease Management, Soil Health" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="categories" class="form-label">Categories</label>
+              <select id="categories" name="categories" class="form-select" multiple required>
+                {% for c in categories %}
+                  <option value="{{ c.name }}">{{ c.name }}</option>
+                {% endfor %}
+              </select>
+              <div class="form-text">Hold Ctrl/Cmd to select multiple categories.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="bio" class="form-label">Brief Bio</label>
+              <textarea id="bio" name="bio" class="form-control" rows="6" placeholder="Summarize your background, certifications, experience..." required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="contact_url" class="form-label">Optional: Contact/Portfolio URL</label>
+              <input type="url" id="contact_url" name="contact_url" class="form-control" placeholder="https://">
+            </div>
+
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="agree" required>
+              <label class="form-check-label" for="agree">
+                I agree to the platform’s <a href="{{ url_for('terms') }}" target="_blank">Terms & Conditions</a>.
+              </label>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-success btn-lg">
+                <i class="fas fa-paper-plane"></i> Submit Application
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card-footer bg-light">
+          <small class="text-muted">
+            Note: You won’t be publicly listed until an admin approves your application.
+          </small>
+        </div>
+      </div>
+
+      <div class="text-center mt-3">
+        <a href="{{ url_for('consultancy_home') }}" class="text-decoration-none">
+          <i class="fas fa-arrow-left"></i> Back to Consultancy Home
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Basic client-side validation for multi-select not empty
+document.querySelector('form')?.addEventListener('submit', function (e) {
+  const expertise = document.getElementById('expertise').value.trim();
+  const categories = Array.from(document.getElementById('categories').selectedOptions).map(o => o.value);
+  const bio = document.getElementById('bio').value.trim();
+  if (!expertise || categories.length === 0 || !bio) {
+    e.preventDefault();
+    alert('Please fill expertise, select at least one category, and provide a brief bio.');
+  } else {
+    // Convert selected category names to a comma-separated string if backend expects a single field
+    // Optional: uncomment if your route expects name list in one field `categories`
+    // const hidden = document.createElement('input');
+    // hidden.type = 'hidden'; hidden.name = 'categories'; hidden.value = categories.join(', ');
+    // this.appendChild(hidden);
+  }
+});
+</script>
+{% endblock %}

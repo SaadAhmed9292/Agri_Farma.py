@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - AgriFarma{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 bg-dark text-white min-vh-100 py-3">
+            <h5 class="mb-4"><i class="fas fa-cog"></i> Admin Panel</h5>
+            <nav class="nav flex-column">
+                <a class="nav-link text-white active" href="{{ url_for('admin_dashboard') }}">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a class="nav-link text-white" href="{{ url_for('admin_users') }}">
+                    <i class="fas fa-users"></i> Users
+                </a>
+                <a class="nav-link text-white" href="{{ url_for('admin_categories') }}">
+                    <i class="fas fa-tags"></i> Categories
+                </a>
+                <a class="nav-link text-white" href="{{ url_for('admin_forum') }}">
+                    <i class="fas fa-comments"></i> Forum
+                </a>
+                <a class="nav-link text-white" href="{{ url_for('admin_knowledge') }}">
+                    <i class="fas fa-book"></i> Knowledge Base
+                </a>
+                <a class="nav-link text-white" href="{{ url_for('admin_consultants') }}">
+                    <i class="fas fa-user-tie"></i> Consultants
+                </a>
+                <a class="nav-link text-white" href="{{ url_for('admin_products') }}">
+                    <i class="fas fa-box"></i> Products
+                </a>
+                <a class="nav-link text-white" href="{{ url_for('admin_orders') }}">
+                    <i class="fas fa-shopping-cart"></i> Orders
+                </a>
+                <a class="nav-link text-white" href="{{ url_for('admin_reports') }}">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </a>
+                <hr class="bg-white">
+                <a class="nav-link text-white" href="{{ url_for('index') }}">
+                    <i class="fas fa-home"></i> Back to Site
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-10 py-4">
+            <h2 class="mb-4">Dashboard Overview</h2>
+
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class="mb-0">{{ stats.total_users }}</h3>
+                                    <p class="mb-0">Total Users</p>
+                                </div>
+                                <i class="fas fa-users fa-3x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class="mb-0">{{ stats.total_products }}</h3>
+                                    <p class="mb-0">Products</p>
+                                </div>
+                                <i class="fas fa-box fa-3x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class="mb-0">{{ stats.pending_orders }}</h3>
+                                    <p class="mb-0">Pending Orders</p>
+                                </div>
+                                <i class="fas fa-shopping-cart fa-3x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class="mb-0">Rs. {{ stats.total_revenue }}</h3>
+                                    <p class="mb-0">Total Revenue</p>
+                                </div>
+                                <i class="fas fa-dollar-sign fa-3x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Sales Overview</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="salesChart" height="100"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">User Activity</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="activityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Recent Orders</h5>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in recent_orders %}
+                                    <tr>
+                                        <td>#{{ order.id }}</td>
+                                        <td>{{ order.user.name if order.user else 'N/A' }}</td>
+                                        <td>Rs. {{ order.total }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if order.status == 'placed' %}warning{% elif order.status == 'delivered' %}success{% else %}info{% endif %}">
+                                                {{ order.status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center">No recent orders</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Pending Approvals</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="{{ url_for('admin_consultants') }}" 
+                               class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-0">Consultant Applications</h6>
+                                        <small class="text-muted">Pending review</small>
+                                    </div>
+                                    <span class="badge bg-warning">{{ pending.consultants }}</span>
+                                </div>
+                            </a>
+                            <a href="{{ url_for('admin_products') }}" 
+                               class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-0">Product Listings</h6>
+                                        <small class="text-muted">Awaiting approval</small>
+                                    </div>
+                                    <span class="badge bg-warning">{{ pending.products }}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Sample charts - replace with real data
+const salesCtx = document.getElementById('salesChart').getContext('2d');
+new Chart(salesCtx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+            label: 'Sales',
+            data: [12000, 19000, 15000, 25000, 22000, 30000],
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Edit Blog - AgriFarma{% endblock %}
+{% block content %}
+<div class='container'>
+  <h2>Edit Blog</h2>
+  <form method='post' action='{{ url_for('edit_blog', blog_id=post.id) }}'>
+    <div class='mb-3'>
+      <label class='form-label'>Title</label>
+      <input class='form-control' name='title' value='{{ post.title }}' required>
+    </div>
+    <div class='mb-3'>
+      <label class='form-label'>Content</label>
+      <textarea class='form-control' rows='8' name='content' required>{{ post.content }}</textarea>
+    </div>
+    <div class='mb-3'>
+      <label class='form-label'>Tags</label>
+      <input class='form-control' name='tags' value='{{ post.tags }}'>
+    </div>
+    <button class='btn btn-success'>Save Changes</button>
+  </form>
+</div>
+{% endblock %}

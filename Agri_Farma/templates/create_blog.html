@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Create Blog - AgriFarma{% endblock %}
+{% block content %}
+<div class='container'>
+  <h2>Create Blog Post</h2>
+  <form method='post' action='{{ url_for('create_blog') }}' enctype='multipart/form-data'>
+    <div class='mb-3'>
+      <label class='form-label'>Title</label>
+      <input class='form-control' name='title' required>
+    </div>
+    <div class='mb-3'>
+      <label class='form-label'>Category</label>
+      <select class='form-select' name='category' required>
+        {% for c in categories %}
+        <option value='{{ c.id }}'>{{ c.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class='mb-3'>
+      <label class='form-label'>Tags (comma separated)</label>
+      <input class='form-control' name='tags'>
+    </div>
+    <div class='mb-3'>
+      <label class='form-label'>Content</label>
+      <textarea class='form-control' rows='8' name='content' required></textarea>
+    </div>
+    <div class='mb-3'>
+      <label class='form-label'>Media</label>        
+      <input type='file' class='form-control' name='media' multiple>
+    </div>
+    <button class='btn btn-success'>Publish</button>
+  </form>
+</div>
+{% endblock %}

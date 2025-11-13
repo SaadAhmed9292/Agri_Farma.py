@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block title %}Admin Knowledge{% endblock %}{% block content %}
+<div class='container'><h2>Knowledge Moderation</h2>
+<table class='table'><thead><tr><th>Title</th><th>Author</th><th>Views</th></tr></thead><tbody>
+{% for b in blogs %}<tr><td>{{ b.title }}</td><td>{{ b.author.name }}</td><td>{{ b.views }}</td></tr>{% endfor %}
+</tbody></table></div>{% endblock %}

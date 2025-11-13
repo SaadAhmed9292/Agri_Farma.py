@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Thread - AgriFarma{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="card mb-3">
+    <div class="card-body">
+      <h3 class="card-title">{{ thread.title }}</h3>
+      <p class="card-text">{{ thread.content }}</p>
+      <small class="text-muted">by {{ thread.author.name }} • {{ thread.created_at|timesince }}</small>
+    </div>
+  </div>
+
+  <h5>Replies</h5>
+  {% for post in posts %}
+  <div class="card mb-2">
+    <div class="card-body">
+      <p class="mb-1">{{ post.content }}</p>
+      <small class="text-muted">by {{ post.author.name }} • {{ post.created_at|timesince }}</small>
+    </div>
+  </div>
+  {% endfor %}
+
+  {% if current_user.is_authenticated %}
+  <div class="card mt-4">
+    <div class="card-body">
+      <form method="post" action="{{ url_for('reply_thread', thread_id=thread.id) }}">
+        <div class="mb-3">
+          <label class="form-label">Your Reply</label>
+          <textarea class="form-control" name="content" rows="4" required></textarea>
+        </div>
+        <button class="btn btn-success">Post Reply</button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <div class="alert alert-info mt-3">Please login to reply.</div>
+  {% endif %}
+</div>
+{% endblock %}
